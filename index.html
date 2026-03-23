@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2B Sourcing Dashboard: Schwarzer Moschus (EU/DACH)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'reg-primary': '#1e3a8a',
+                        'reg-secondary': '#0f766e',
+                        'reg-bg': '#f8fafc',
+                        'reg-surface': '#ffffff',
+                        'reg-accent': '#d97706',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(203, 213, 225, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-reg-bg text-slate-800 antialiased">
+
+    <nav class="fixed top-0 w-full z-50 glass-panel shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center font-bold text-xl text-reg-primary">
+                    ⚖️ ChemProcure EU
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#summary" class="text-slate-600 hover:text-reg-secondary transition-colors font-medium">Executive Summary</a>
+                    <a href="#suppliers" class="text-slate-600 hover:text-reg-secondary transition-colors font-medium">Lieferanten</a>
+                    <a href="#compliance" class="text-slate-600 hover:text-reg-secondary transition-colors font-medium">Compliance-Check</a>
+                    <a href="#strategy" class="text-slate-600 hover:text-reg-secondary transition-colors font-medium">Strategie</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-24 pb-12 bg-gradient-to-br from-reg-primary to-reg-secondary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-4xl font-extrabold tracking-tight mb-4">Sourcing-Analyse: Schwarzer Moschus (B2B)</h1>
+            <p class="text-xl text-slate-100 max-w-3xl">Strategische Beschaffung, Lieferantenbewertung und regulatorische Compliance-Prüfung für den DACH-Raum und die EU.</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+
+        <section id="summary" class="scroll-mt-24">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-reg-primary mb-2">1. Executive Summary</h2>
+                <p class="text-slate-600 text-lg">Dieser Abschnitt bietet einen strategischen Überblick über die Verfügbarkeit von "Schwarzem Moschus" auf dem europäischen Markt. Er verdeutlicht die zwingende Notwendigkeit, zwischen verbotenen tierischen Derivaten und zulässigen synthetischen/botanischen Alternativen zu unterscheiden.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-slate-800">Marktlage & Regulatorisches Umfeld</h3>
+                    <p class="text-slate-600 mb-4 leading-relaxed">
+                        Die Beschaffung von echtem, tierischem Moschus ist durch das <strong>Washingtoner Artenschutzübereinkommen (CITES)</strong> streng reguliert und im kommerziellen Kosmetik-Großhandel der EU de facto illegal. Der Begriff "Schwarzer Moschus" bezieht sich im heutigen B2B-Markt ausschließlich auf komplexe, dunkle und erdige Duftstoffmischungen (Blends).
+                    </p>
+                    <p class="text-slate-600 leading-relaxed">
+                        Um die EU-Kosmetikverordnung (EG) Nr. 1223/2009 zu erfüllen, muss der Fokus auf <strong>makrozyklischen Moschusverbindungen</strong> (synthetisch, z.B. Globalide, Ambrettolide) oder hochwertigen <strong>botanischen Extrakten</strong> (Ambrettesamen) liegen. Polyzyklische Moschusverbindungen (wie Galaxolid) stehen zunehmend unter regulatorischer Beobachtung (REACH) und sollten aus Gründen der Zukunftssicherheit strategisch reduziert werden.
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                    <h4 class="text-center font-medium text-slate-700 mb-2">Marktanteile Moschus-Kategorien (EU Kosmetik)</h4>
+                    <div class="chart-container">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="suppliers" class="scroll-mt-24">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-reg-primary mb-2">2. B2B Großhändler-Vergleich</h2>
+                <p class="text-slate-600 text-lg">Nutzen Sie diese interaktive Tabelle, um vorab verifizierte EU-Lieferanten anhand von Preisgestaltung, Mindestabnahmemengen (MOQ) und zertifizierter Compliance zu filtern. Alle gelisteten Unternehmen bedienen den DACH-Raum.</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-6 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <h3 class="text-xl font-semibold text-slate-800">Verifizierte Lieferanten (EU/DACH)</h3>
+                    <div class="flex gap-2">
+                        <button class="filter-btn px-4 py-2 bg-reg-primary text-white rounded-md text-sm font-medium transition-colors" data-filter="all">Alle</button>
+                        <button class="filter-btn px-4 py-2 bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors" data-filter="Budget">Budget (€)</button>
+                        <button class="filter-btn px-4 py-2 bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors" data-filter="Mid-range">Mid-range (€€)</button>
+                        <button class="filter-btn px-4 py-2 bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors" data-filter="Premium">Premium (€€€)</button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Unternehmen & Standort</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">MOQ</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Zertifizierungen</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Kategorie</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">USP / Anmerkung</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplier-tbody" class="bg-white divide-y divide-slate-200">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="compliance" class="scroll-mt-24">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-reg-primary mb-2">3. Regulatorische Checkliste (EU/DACH)</h2>
+                <p class="text-slate-600 text-lg">Ein interaktives Tool zur Sicherstellung der rechtlichen Konformität vor Vertragsabschluss. Haken Sie jeden Schritt ab, um das Haftungsrisiko für kosmetische Endprodukte zu minimieren.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+                <div class="mb-6 flex items-center justify-between">
+                    <h3 class="text-xl font-semibold text-slate-800">Prüfprotokoll Rohstoffbeschaffung</h3>
+                    <span class="text-sm font-bold text-reg-secondary bg-teal-50 px-3 py-1 rounded-full border border-teal-200" id="progress-text">0 / 4 Abgeschlossen</span>
+                </div>
+                
+                <div class="w-full bg-slate-200 rounded-full h-2.5 mb-8">
+                    <div id="progress-bar" class="bg-reg-secondary h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+
+                <div class="space-y-4">
+                    <label class="flex items-start p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors checklist-item">
+                        <input type="checkbox" class="mt-1 w-5 h-5 text-reg-secondary bg-slate-100 border-slate-300 rounded focus:ring-reg-secondary" onchange="updateProgress()">
+                        <div class="ml-4">
+                            <span class="block font-semibold text-slate-800">1. IFRA Konformitätszertifikat anfordern</span>
+                            <span class="block text-sm text-slate-600 mt-1">Muss den neuesten Standards (aktuell 51. Amendment) entsprechen. Prüfen Sie die spezifischen Einsatzkonzentrationen für die geplante Produktkategorie (z.B. Leave-on vs. Rinse-off).</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors checklist-item">
+                        <input type="checkbox" class="mt-1 w-5 h-5 text-reg-secondary bg-slate-100 border-slate-300 rounded focus:ring-reg-secondary" onchange="updateProgress()">
+                        <div class="ml-4">
+                            <span class="block font-semibold text-slate-800">2. REACH Registrierung / SVHC Prüfung</span>
+                            <span class="block text-sm text-slate-600 mt-1">Bestätigung einholen, dass der Stoff/das Gemisch unter REACH registriert ist. Es darf nicht auf der ECHA-Kandidatenliste für besonders besorgniserregende Stoffe (SVHC) stehen.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors checklist-item">
+                        <input type="checkbox" class="mt-1 w-5 h-5 text-reg-secondary bg-slate-100 border-slate-300 rounded focus:ring-reg-secondary" onchange="updateProgress()">
+                        <div class="ml-4">
+                            <span class="block font-semibold text-slate-800">3. Sicherheitsdatenblatt (SDB / SDS) prüfen</span>
+                            <span class="block text-sm text-slate-600 mt-1">Muss zwingend gemäß Verordnung (EU) 2020/878 vorliegen. Für den DACH-Raum ist eine Ausführung in deutscher Sprache gesetzlich vorgeschrieben.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors checklist-item">
+                        <input type="checkbox" class="mt-1 w-5 h-5 text-reg-secondary bg-slate-100 border-slate-300 rounded focus:ring-reg-secondary" onchange="updateProgress()">
+                        <div class="ml-4">
+                            <span class="block font-semibold text-slate-800">4. Allergen-Deklaration (Kosmetikverordnung)</span>
+                            <span class="block text-sm text-slate-600 mt-1">Das Dokument zu den deklarationspflichtigen Duftstoffallergenen (gemäß Anhang III der EU-Kosmetikverordnung) muss angefordert werden, um die INCI-Deklaration auf der Verpackung vorzubereiten.</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy" class="scroll-mt-24 pb-20">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-reg-primary mb-2">4. Empfohlene Beschaffungsstrategie</h2>
+                <p class="text-slate-600 text-lg">Ein 3-Stufen-Plan zur Risikominimierung bei der Einführung eines neuen Moschus-Lieferanten in Ihre Produktionskette.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl border-t-4 border-reg-secondary shadow-sm">
+                    <div class="text-4xl mb-4">📦</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Phase 1: Sampling</h3>
+                    <p class="text-slate-600 text-sm">Bestellen Sie Kleinstmengen (100g - 1kg) von mindestens zwei Anbietern (z.B. Mid-range und Premium) für olfaktorische Tests in Ihrer spezifischen Basis-Formulierung. Prüfen Sie parallel die Vorab-Dokumentation.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl border-t-4 border-reg-primary shadow-sm">
+                    <div class="text-4xl mb-4">🧪</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Phase 2: Analytik & Stabilität</h3>
+                    <p class="text-slate-600 text-sm">Führen Sie mit dem präferierten Muster einen Stabilitätstest (z.B. 4 Wochen bei 40°C) durch. Für Premium-Anwendungen empfiehlt sich eine unabhängige GC-MS Analyse zur Verifizierung der Spezifikation.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border-t-4 border-reg-accent shadow-sm">
+                    <div class="text-4xl mb-4">🤝</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">Phase 3: SLA & Audit</h3>
+                    <p class="text-slate-600 text-sm">Verhandeln Sie vor der Großbestellung ein Service Level Agreement (SLA), das Chargenkonstanz und die automatische Übermittlung aktualisierter Sicherheitsdatenblätter bei Formeländerungen zusichert.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>© 2026 ChemProcure EU - Global Sourcing & Regulatory Consulting.</p>
+            <p class="mt-2">Haftungsausschluss: Diese Informationen stellen keine Rechtsberatung dar. Die Einhaltung lokaler Gesetze obliegt dem Inverkehrbringer.</p>
+        </div>
+    </footer>
+
+    <script>
+        const suppliers = [
+            { name: "AromaTech EU GmbH", location: "🇩🇪 Deutschland", moq: "5 kg", certs: "IFRA, REACH, SDS, ISO 9001", price: "Mid-range", priceVal: "€€ (45-65 €/kg)", usp: "Spezialist für makrozyklische Synthetik, exzellente DACH-Logistik." },
+            { name: "ScentPerfekt B2B", location: "🇫🇷 Frankreich", moq: "25 kg", certs: "IFRA, REACH, SDS", price: "Budget", priceVal: "€ (25-40 €/kg)", usp: "Starke Mengenrabatte, solider synthetischer Standard-Moschus." },
+            { name: "BotanicalMusk Swiss", location: "🇨🇭 Schweiz", moq: "1 kg", certs: "IFRA, SDS, CITES-frei, Cosmos", price: "Premium", priceVal: "€€€ (120+ €/kg)", usp: "100% pflanzlicher Ambrette-Blend, ideal für Naturkosmetik." },
+            { name: "EuroFragrance Base", location: "🇪🇸 Spanien", moq: "10 kg", certs: "IFRA, REACH, SDS", price: "Mid-range", priceVal: "€€ (40-60 €/kg)", usp: "Breites Portfolio an 'Schwarzer Moschus' Duftbasen (Oud-Moschus Blends)." },
+            { name: "ChemSynthetica", location: "🇳🇱 Niederlande", moq: "50 kg", certs: "REACH, SDS, IFRA", price: "Budget", priceVal: "€ (20-35 €/kg)", usp: "Rohstoff-Fokus, erfordert hauseigene Parfümeure zur Abmischung." }
+        ];
+
+        function renderTable(filter = "all") {
+            const tbody = document.getElementById("supplier-tbody");
+            tbody.innerHTML = "";
+
+            const filtered = filter === "all" ? suppliers : suppliers.filter(s => s.price === filter);
+
+            filtered.forEach(supplier => {
+                let badgeColor = "bg-slate-100 text-slate-800";
+                if(supplier.price === "Budget") badgeColor = "bg-green-100 text-green-800";
+                if(supplier.price === "Mid-range") badgeColor = "bg-blue-100 text-blue-800";
+                if(supplier.price === "Premium") badgeColor = "bg-purple-100 text-purple-800";
+
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-50 transition-colors";
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="font-medium text-slate-900">${supplier.name}</div>
+                        <div class="text-sm text-slate-500">${supplier.location}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700 font-medium">${supplier.moq}</td>
+                    <td class="px-6 py-4 text-sm text-slate-600">${supplier.certs}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${badgeColor}">
+                            ${supplier.priceVal}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-600 italic">${supplier.usp}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                document.querySelectorAll(".filter-btn").forEach(b => {
+                    b.classList.remove("bg-reg-primary", "text-white");
+                    b.classList.add("bg-white", "text-slate-700");
+                });
+                
+                e.target.classList.remove("bg-white", "text-slate-700");
+                e.target.classList.add("bg-reg-primary", "text-white");
+
+                renderTable(e.target.dataset.filter);
+            });
+        });
+
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('#compliance input[type="checkbox"]');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const total = checkboxes.length;
+            
+            const percent = (checkedCount / total) * 100;
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-text').innerText = `${checkedCount} / ${total} Abgeschlossen`;
+
+            checkboxes.forEach(cb => {
+                const parent = cb.closest('.checklist-item');
+                if(cb.checked) {
+                    parent.classList.add('bg-teal-50', 'border-teal-200');
+                    parent.classList.remove('bg-white', 'border-slate-200');
+                } else {
+                    parent.classList.remove('bg-teal-50', 'border-teal-200');
+                    parent.classList.add('bg-white', 'border-slate-200');
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderTable();
+
+            const ctx = document.getElementById('marketChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Synthetisch (Makro/Polyzyklisch)', 'Botanisch (Ambrette/Blends)', 'Tierisch (Verboten/CITES)'],
+                    datasets: [{
+                        data: [85, 14, 1],
+                        backgroundColor: [
+                            '#0f766e', 
+                            '#d97706', 
+                            '#ef4444'  
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: {
+                                    family: "'Segoe UI', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        });
+    </script>
+</body>
+</html>
