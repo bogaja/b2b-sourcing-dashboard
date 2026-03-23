@@ -32,10 +32,49 @@
             height: 350px;
             max-height: 400px;
         }
+        @media (max-width: 640px) {
+            .chart-container { height: 220px; }
+        }
         .glass-panel {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(203, 213, 225, 0.5);
+        }
+
+        /* Mobile nav */
+        #mobile-menu-b2b { display: none; }
+        #mobile-menu-b2b.open { display: block; }
+
+        /* Responsive table: card layout on mobile */
+        @media (max-width: 640px) {
+            .responsive-table thead { display: none; }
+            .responsive-table tbody tr {
+                display: block;
+                border: 1px solid #e2e8f0;
+                border-radius: 0.75rem;
+                margin-bottom: 1rem;
+                padding: 0.75rem 1rem;
+                background: #fff;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            }
+            .responsive-table tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 0.5rem;
+                padding: 0.4rem 0;
+                border-bottom: 1px solid #f1f5f9;
+                font-size: 0.8rem;
+                white-space: normal !important;
+            }
+            .responsive-table tbody td:last-child { border-bottom: none; }
+            .responsive-table tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #475569;
+                flex-shrink: 0;
+                width: 100px;
+            }
         }
     </style>
 </head>
@@ -47,20 +86,36 @@
                 <div class="flex-shrink-0 flex items-center font-bold text-xl text-reg-primary">
                     ⚖️ ChemProcure EU
                 </div>
+                <!-- Desktop nav -->
                 <div class="hidden md:flex space-x-8">
                     <a href="#summary" class="text-slate-600 hover:text-reg-secondary transition-colors font-medium">Executive Summary</a>
                     <a href="#suppliers" class="text-slate-600 hover:text-reg-secondary transition-colors font-medium">Lieferanten</a>
                     <a href="#compliance" class="text-slate-600 hover:text-reg-secondary transition-colors font-medium">Compliance-Check</a>
                     <a href="#strategy" class="text-slate-600 hover:text-reg-secondary transition-colors font-medium">Strategie</a>
                 </div>
+                <!-- Mobile hamburger -->
+                <button id="hamburger-b2b" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menü öffnen" onclick="document.getElementById('mobile-menu-b2b').classList.toggle('open')">
+                    <span class="block w-6 h-0.5 bg-slate-700"></span>
+                    <span class="block w-6 h-0.5 bg-slate-700"></span>
+                    <span class="block w-6 h-0.5 bg-slate-700"></span>
+                </button>
+            </div>
+            <!-- Mobile dropdown -->
+            <div id="mobile-menu-b2b" class="md:hidden pb-4">
+                <div class="flex flex-col gap-1 pt-2 border-t border-slate-200">
+                    <a href="#summary" class="text-sm font-medium text-slate-700 py-2 hover:text-reg-secondary" onclick="document.getElementById('mobile-menu-b2b').classList.remove('open')">Executive Summary</a>
+                    <a href="#suppliers" class="text-sm font-medium text-slate-700 py-2 hover:text-reg-secondary" onclick="document.getElementById('mobile-menu-b2b').classList.remove('open')">Lieferanten</a>
+                    <a href="#compliance" class="text-sm font-medium text-slate-700 py-2 hover:text-reg-secondary" onclick="document.getElementById('mobile-menu-b2b').classList.remove('open')">Compliance-Check</a>
+                    <a href="#strategy" class="text-sm font-medium text-slate-700 py-2 hover:text-reg-secondary" onclick="document.getElementById('mobile-menu-b2b').classList.remove('open')">Strategie</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <header class="pt-24 pb-12 bg-gradient-to-br from-reg-primary to-reg-secondary text-white">
+    <header class="pt-24 pb-10 sm:pb-12 bg-gradient-to-br from-reg-primary to-reg-secondary text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 class="text-4xl font-extrabold tracking-tight mb-4">Sourcing-Analyse: Schwarzer Moschus (B2B)</h1>
-            <p class="text-xl text-slate-100 max-w-3xl">Strategische Beschaffung, Lieferantenbewertung und regulatorische Compliance-Prüfung für den DACH-Raum und die EU.</p>
+            <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4 leading-tight">Sourcing-Analyse: Schwarzer Moschus (B2B)</h1>
+            <p class="text-base sm:text-xl text-slate-100 max-w-3xl">Strategische Beschaffung, Lieferantenbewertung und regulatorische Compliance-Prüfung für den DACH-Raum und die EU.</p>
         </div>
     </header>
 
@@ -109,7 +164,7 @@
                 </div>
                 
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-slate-200">
+                    <table class="min-w-full divide-y divide-slate-200 responsive-table">
                         <thead class="bg-slate-100">
                             <tr>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Unternehmen & Standort</th>
@@ -238,18 +293,18 @@
                 const tr = document.createElement("tr");
                 tr.className = "hover:bg-slate-50 transition-colors";
                 tr.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-6 py-4" data-label="Unternehmen">
                         <div class="font-medium text-slate-900">${supplier.name}</div>
                         <div class="text-sm text-slate-500">${supplier.location}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700 font-medium">${supplier.moq}</td>
-                    <td class="px-6 py-4 text-sm text-slate-600">${supplier.certs}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-6 py-4 text-sm text-slate-700 font-medium" data-label="MOQ">${supplier.moq}</td>
+                    <td class="px-6 py-4 text-sm text-slate-600" data-label="Zertifizierungen">${supplier.certs}</td>
+                    <td class="px-6 py-4" data-label="Preis">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${badgeColor}">
                             ${supplier.priceVal}
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-sm text-slate-600 italic">${supplier.usp}</td>
+                    <td class="px-6 py-4 text-sm text-slate-600 italic" data-label="USP">${supplier.usp}</td>
                 `;
                 tbody.appendChild(tr);
             });
